@@ -1,0 +1,12 @@
+Meteor.methods({
+  "requestUrlData" : function(url){
+    this.unblock();
+    HTTP.get(url, {data: {}},
+      function (error, result) {
+        if (!error) {
+          return result;
+        }
+      }
+    );
+  }
+});

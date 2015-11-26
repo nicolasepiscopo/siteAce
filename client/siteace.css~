@@ -1,0 +1,16 @@
+/* CSS declarations go here */
+@import url(https://fonts.googleapis.com/css?family=Pacifico);
+
+h1,h2,h3,h4,.navbar-brand{
+  font-family: 'Pacifico', cursive;
+}
+.hidden_div{
+	display:none;
+}
+.comment-icon{
+  max-width:48px;
+}
+.searchContainer{
+  max-height:200px;
+  overflow-y:scroll;
+}

@@ -1,0 +1,10 @@
+/////
+// accounts plugin configuration
+////
+Accounts.ui.config({
+  passwordSignupFields: "USERNAME_AND_EMAIL"
+});
+
+// Site configuration
+
+Session.set("topSitesQuantity", 5);
