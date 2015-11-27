@@ -15,5 +15,5 @@ FlashMessages.configure({
 });
 
 // Site configuration
-
 Session.set("topSitesQuantity", 5);
+Session.set("numberOfRecommendations", 3);

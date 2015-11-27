@@ -20,6 +20,15 @@ Router.route('/sites', function () {
   });
 });
 
+Router.route('/search', function () {
+  this.render('searchBox', {
+    to : "main"
+  });
+  this.render('navbar', {
+    to : "navbar"
+  });
+});
+
 Router.route('/post', function () {
   this.render('siteForm', {
     to : "main"

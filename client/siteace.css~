@@ -11,6 +11,6 @@ h1,h2,h3,h4,.navbar-brand{
   max-width:48px;
 }
 .searchContainer{
-  max-height:200px;
+  max-height:100px;
   overflow-y:scroll;
 }

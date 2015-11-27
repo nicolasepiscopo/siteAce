@@ -1,5 +1,6 @@
 // helper function that returns all available websites
 Template.sites.helpers({
+  searchQuery: Session.get('searchQuery'),
 	websites:function(){
 		return Websites.find({}, {"sort":{"votesUp":-1, "votesDown":-1}});
 	}
@@ -33,6 +34,22 @@ Template.siteForm.helpers({
   description : Session.get("formDescription")
 });
 
+//Recommendations
+Template.recommendations.helpers({
+  sites : function(){
+    Recommendations.find({"user":Meteor.user()._id}).forEach(function(recommendation){
+      recommendation
+    });
+  }
+});
+
+//Easysearch package
 Template.searchBox.helpers({
-  playersIndex: () => PlayersIndex // instanceof EasySearch.Index
+  websitesIndex: () => WebsitesIndex
+});
+
+//Global helpers
+Template.registerHelper('cleanId', function(id) {
+    var cleanId = id.substring(0,17); //same as truncate.
+    return new Spacebars.SafeString(cleanId)
 });

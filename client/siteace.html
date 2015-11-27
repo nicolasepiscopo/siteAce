@@ -37,20 +37,27 @@
     {{#if currentUser}}
     <a href="/post" class="btn btn-success pull-right">
       <span class="glyphicon glyphicon-plus"></span> Post a Site!
+    </a> 
+    {{/if}} 
+    <a href="/search" class="btn btn-info pull-right">
+      <span class="glyphicon glyphicon-search"></span> Search for a Site!
     </a>
-    {{/if}}
   </div>
   <div class="row">
-    <div class="col-xs-12 col-sm-4">
+    <div class="col-xs-12 col-sm-6">
       {{> topRatedSites}} 
     </div>
-    <div class="col-xs-12 col-sm-4">
+    <div class="col-xs-12 col-sm-6">
       {{> lastAddedSites}} 
     </div>
-    <div class="col-xs-12 col-sm-4">
-      {{> searchBox }}
-    </div>
   </div>
+  {{#if currentUser}}
+    <div class="row">
+      <div class="col-xs-12">
+        {{> recommendations}}
+      </div>
+    </div>
+  {{/if}}
 </template>
 
 <template name="topRatedSites">
@@ -89,22 +96,20 @@
   </div>
 </template>
 
-<template name="searchBox">
+<!-- Recommendation system -->
+<template name="recommendations">
+  {{#if sites}}
   <div class="panel panel-default">
-    <div class="panel-heading">Search sites</div>
+    <div class="panel-heading">Recommended sites for you</div>
     <div class="panel-body">
-      <div class="form-control">
-        {{> EasySearch.Input index=websitesIndex placeholder="Search by keyword..." content="Load more content" maxPages=2 }}
-      </div>
-      <div class="searchContainer">
-        <ul class="list-group">
-          {{#EasySearch.Each index=websitesIndex }}
-            <li class="list-group-item"><a href="/site/{{_id}}">{{title}}</a></li>
-          {{/EasySearch.Each}}
-        </ul>
-      </div>
+      <ul class="list-group">
+        {{#each sites}}
+        <li class="list-group-item"><a href="/site/{{_id}}">{{title}}</a></li>
+        {{/each}}
+      </ul>
     </div>
-  </div>  
+  </div>
+  {{/if}}
 </template>
 
 <template name="siteForm">
@@ -177,6 +182,13 @@
     {{> site}}
     {{/each}}
 	</div><!-- end row -->
+  {{#if currentUser}}
+    <div class="row">
+      <div class="col-xs-12">
+        {{> recommendations}}
+      </div>
+    </div>
+  {{/if}}
 </template>
 
 <!-- template that displays individual website entries -->
@@ -214,6 +226,20 @@
   </div>
 </template>
 
+<!-- Site solo template for search section -->
+<template name="searchResult">
+  <div class="col-xs-12 col-sm-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a href="/site/{{cleanId _id}}">{{title}}</a>        
+      </div>
+      <div class="panel-body">
+        <p>{{description}}</p>
+      </div>
+    </div>
+  </div>
+</template>
+
 <template name="siteDetail">
   <!-- Site details template -->  
   <div class="row">
@@ -237,6 +263,8 @@
           <p>{{content}}</p>
         </div>
       </div>
+      {{else}}
+        <p class="text-danger">No comments found!</p>
       {{/each}}
     </div>
   </div>
@@ -263,4 +291,40 @@
 	    </div>  
     </div>
   </div>  
+</template>
+
+<template name="searchBox">
+  <div class="row">
+    <div class="col-xs-12">
+      <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/sites">Sites</a></li>
+        <li class="active">Search</li>
+      </ol>
+    </div>
+    <div class="row">
+      <div class="col-xs-1">
+        <span class="glyphicon glyphicon-search pull-right"></span>
+      </div>
+      <div class="col-xs-11">
+        {{> EasySearch.Input index=websitesIndex }}
+      </div>
+    </div>   
+    <hr> 
+    <div class="row">
+      {{#EasySearch.Each index=websitesIndex }}
+        {{> searchResult }}
+      {{/EasySearch.Each}}
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        {{> EasySearch.LoadMore index=websitesIndex }}
+      </div>
+      <div class="col-xs-12">
+        {{#EasySearch.IfNoResults index=websitesIndex}}
+          <p class="text-danger">No results found!</p>
+        {{/EasySearch.IfNoResults}}
+      </div>
+    </div>
+  </div>
 </template>

@@ -34,7 +34,7 @@ Router.route('/site/:_id', function (id) {
     to : "main",
     data : {
       site : Websites.findOne({_id:this.params._id}),
-      comments : Comments.find({site:this.params._id},{"sort":{"createdOn":-1}})
+      comments : Comments.find({site:this.params._id},{"sort":{"createdOn":1}})
     }
   });
   this.render('navbar', {

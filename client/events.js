@@ -11,8 +11,12 @@ Template.site.events({
 		  };
 				
 		  if(!Votes.findOne({createdBy:vote.createdBy, website:vote.website, number:vote.number})){
-	      if(Votes.insert(vote))
+	      if(Votes.insert(vote)){
+	        //add recommendation 
+	        Meteor.call("addRecommendation", Meteor.user()._id, vote.website);    
+	        //update votes     
           Websites.update(vote.website, { $inc : {votesUp : 1 } });
+        }
       }else{
         FlashMessages.sendWarning("You just voted that site before.");
       }
@@ -45,7 +49,7 @@ Template.site.events({
     }
 		return false;// prevent the button from reloading the page
 	}
-})
+});
 
 Template.siteForm.events({
 	"submit .js-save-website-form" : function(event){
