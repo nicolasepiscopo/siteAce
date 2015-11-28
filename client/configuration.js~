@@ -17,9 +17,3 @@ FlashMessages.configure({
 // Site configuration
 Session.set("topSitesQuantity", 5);
 Session.set("numberOfRecommendations", 3);
-
-// Suscribe
-Meteor.subscribe("websites");
-Meteor.subscribe("comments");
-Meteor.subscribe("recommendations");
-Meteor.subscribe("votes");

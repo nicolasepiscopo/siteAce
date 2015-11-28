@@ -17,17 +17,3 @@ Meteor.methods({
     recEngine.link(userId, websiteId);
   }
 });
-
-//Publish
-Meteor.publish("websites", function () {
-  return Websites.find();
-});
-Meteor.publish("comments", function () {
-  return Comments.find();
-});
-Meteor.publish("recommendations", function () {
-  return Recommendations.find();
-});
-Meteor.publish("votes", function () {
-  return Recommendations.find();
-});
