@@ -6,23 +6,21 @@ Template.site.events({
 		  var vote = {
 		    number : 1,
 		    website : websiteId,
-	      createdOn : new Date(),
-	      createdBy : Meteor.user()._id
+	      	createdOn : new Date(),
+	      	createdBy : Meteor.user()._id
 		  };
-				
+		  
 		  if(!Votes.findOne({createdBy:vote.createdBy, website:vote.website, number:vote.number})){
-	      if(Votes.insert(vote)){
-	        //add recommendation 
-	        Meteor.call("addRecommendation", Meteor.user()._id, vote.website);    
-	        //update votes     
-          Websites.update(vote.website, { $inc : {votesUp : 1 } });
-        }
-      }else{
-        FlashMessages.sendWarning("You just voted that site before.");
-      }
-    }else{
-      FlashMessages.sendError("Sign in to do this.");
-    }
+	      	if(Votes.insert(vote)){
+	        	//update votes     
+          		Websites.update(vote.website, { $inc : {votesUp : 1 } });
+        	}
+	      }else{
+	        FlashMessages.sendWarning("You just voted that site before.");
+	      }
+	    }else{
+	      FlashMessages.sendError("Sign in to do this.");
+	    }
 		return false;// prevent the button from reloading the page
 	}, 
 	"click .js-downvote":function(event){
@@ -57,6 +55,7 @@ Template.siteForm.events({
 		  var site = {
 		    url : event.target.url.value,
 		    title : event.target.title.value,
+		    keywords : event.target.title.value.removeStopWords().split(" ").merge(event.target.description.value.removeStopWords().split(" ")),
 		    description : event.target.description.value,
 		    createdOn : new Date(),
 		    createdBy : Meteor.user()._id
@@ -64,11 +63,13 @@ Template.siteForm.events({
 		
 		  if(!Websites.findOne({url:site.url})){
 		    if(Websites.insert(site)){
-		      FlashMessages.sendSuccess("Website added successfuly!");
-	        event.target.url.value = "";
-	        event.target.title.value = "";
-	        event.target.description.value = "";
-	      }
+		      	FlashMessages.sendSuccess("Website added successfuly!");
+	        	event.target.url.value = "";
+	        	event.target.title.value = "";
+	        	event.target.description.value = "";
+	      	}
+		  }else{
+      		FlashMessages.sendError("This site is already shared");
 		  }
 		}else{
       FlashMessages.sendError("Sign in to do this.");
@@ -78,13 +79,11 @@ Template.siteForm.events({
 	},
 	"click .js-get-site-data" : function(event){
 	  var url = $("#url").val();
-	  Meteor.call("requestUrlData", url, function(error, response){
-	    if(!error){
-	      if(response.content.split("<title>"))
-	        Session.set("formTitle", response.content.split("<title>")[1].split("</title>")[0]);
-	      else
-	        console.log("Error getting title.");
-	    }
+	  $("#metaLoading").show();
+	  extractMeta(url, function (err, res) { 
+	  	$("#title").val(res.title);
+	  	$("#description").val(res.description);
+	  	$("#metaLoading").hide();
 	  });
 	}
 });

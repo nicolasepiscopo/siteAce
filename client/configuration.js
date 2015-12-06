@@ -16,7 +16,7 @@ FlashMessages.configure({
 
 // Site configuration
 Session.set("topSitesQuantity", 5);
-Session.set("numberOfRecommendations", 3);
+Session.set("numberOfRecommendations", 5);
 
 // Suscribe
 Meteor.subscribe("websites");

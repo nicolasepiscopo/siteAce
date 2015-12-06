@@ -139,6 +139,9 @@
               </span>
             </div><!-- /input-group -->
 		      </div>
+          <div class="bg-info padding hidden_div" id="metaLoading">
+            Wait while trying to get information.
+          </div>
 		      <div class="form-group">
 		        <label for="title">Title</label>
 		        <input type="text" class="form-control" id="title" placeholder="Mysite" value="{{title}}" />
@@ -205,6 +208,7 @@
       <div class="panel-body">
         {{#if ../site}}
         <p>{{description}}</p>
+        <p><i>Keywords: {{keywords}}</i></p>
         {{else}}
         <p>Created on: {{createdOn}}</p>
         {{/if}}

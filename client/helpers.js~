@@ -21,6 +21,7 @@ Template.lastAddedSites.helpers({
 Template.siteDetail.helpers({
   getUsername : function(id){
     var user = Meteor.users.findOne({_id:id});
+    console.log(user);
     if(user){
       return user.username;
     }
@@ -36,30 +37,11 @@ Template.siteForm.helpers({
 //Recommendations
 Template.recommendations.helpers({
   sites : function(){
-    //Get last vote from this user
-    var votes = Votes.find({
-      "createdBy" : Meteor.user()._id
+    var sites = [];
+    Recommendations.find({"user":Meteor.user()._id}).forEach(function(recommendation){
+      sites.push(recommendation.site);
     });
-
-    var recommendations = [];
-
-    if(votes){
-
-      var foundKeywords = [];
-      votes.forEach(function(vote){
-        var keywords;
-        if(keywords=Websites.findOne({_id:vote.website}).keywords)
-          foundKeywords.merge(keywords);
-      });
-      
-      Websites.find({keywords : {$in: foundKeywords}},{"limit" : Session.get('numberOfRecommendations')}).forEach(function(r){
-        var voted = Votes.findOne({"createdBy":Meteor.user()._id, "website": r._id});
-        if(!voted)
-          recommendations.push(r);
-      });
-    }
-    
-    return recommendations;
+    return sites;
   }
 });
 
